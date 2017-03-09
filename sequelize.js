@@ -26,7 +26,7 @@ var sequelize = new Sequelize(db, username, pass, {
 /**** DELETE ME ON THE MAIN BRANCH, MAYBE, LATER, MAYBE ***/
 var LogEntry = sequelize.define('LogEntry', {
    message: {
-      type: Sequelize.STRING
+      type: Sequelize.TEXT('long')
    },
    botId: {
       type: Sequelize.STRING
