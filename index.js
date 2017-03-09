@@ -58,7 +58,7 @@ app.post('/logEntry', function(req, res) {
    console.log(req.body);
 
    if (req.body.message === undefined || req.body.botId === undefined) {
-      res.sendStatus(401).json("GRRR YOU NEED TO HAVE A BODY WITH A MESSAGE, YOU HAVE " + JSON.stringify(req.body));
+      res.status(401).json("GRRR YOU NEED TO HAVE A BODY WITH A MESSAGE, YOU HAVE " + JSON.stringify(req.body));
       return;
    }
 
