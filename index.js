@@ -57,7 +57,7 @@ app.get('/logEntry', function(req, res) {
 });
 
 app.put('/logEntry', function(req, res) {
-   return sequelize.findById(req.body.id)
+   return sequelize.LogEntry.findById(req.body.id)
    .then(function(logEntry) {
       return logEntry.update({score: req.body.score, botId: req.body.botId})
    })
