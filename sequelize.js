@@ -23,10 +23,10 @@ var sequelize = new Sequelize(db, username, pass, {
   freezeTableName: true
 });
 
-/**** DELETE ME ON THE MAIN BRANCH, MAYBE, LATER, MAYBE ***/
 var LogEntry = sequelize.define('LogEntry', {
    score: {
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
+      default: -1
    },
    chromosome: {
       type: Sequelize.STRING
@@ -42,6 +42,22 @@ var LogEntry = sequelize.define('LogEntry', {
 });
 
 sequelize.sync().then(function() {
+   return LogEntry.findAll();
+})
+.then(function(entries) {
+   // No entries! Let's seed the population
+   population = [];
+   if (entries.length === 0) {
+      // Generate 1000 55 bit strings of 0s or 1s.
+      for (var i = 0; i < 1000; i++) {
+         chromosome = ''
+         for (var j = 0; j < 55; j++) {
+            num = Math.floor(Math.random()*(1-0+1)+0);
+            chromosome += num.toString();
+         }
+         population.append(chromosome);
+      }
+   }
 })
 .catch(function(err) {
    console.error("EXTREMELY UNLIKELY ERROR DETECTED " + JSON.stringify(err.message), err.stack);

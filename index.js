@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var sequelize = require('./sequelize');
 var bodyParser = require('body-parser')
+var genetics = require('./genetics.js');
+var Promise = require('bluebird');
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -54,17 +56,25 @@ app.get('/logEntry', function(req, res) {
    });
 });
 
-app.post('/logEntry', function(req, res) {
-   console.log(req.body);
-
-   if (req.body.message === undefined || req.body.botId === undefined) {
-      res.status(401).json("GRRR YOU NEED TO HAVE A BODY WITH A MESSAGE, YOU HAVE " + JSON.stringify(req.body));
-      return;
-   }
-
-   return sequelize.LogEntry.create(req.body)
-   .then(function(newGuy) {
-      res.json('OK!')
+// Return a chromosome without a score that needs to be JUDGED
+app.get('/chromosomeToScore', function(req, res) {
+   return sequelize.LogEntry.findOne({where:
+      score: -1
+   })
+   .then(function(unscored) {
+      if (!unscored) {
+         // Generate a new batch of children to mess with
+         genetics.spawnNextGeneration();
+      }
+      else {
+         return Promise.resolve(unscored);
+      }
+   })
+   .then(function(unscored) {
+      return unscored.update({score: -100});
+   })
+   .then(function(unscored) {
+      return res.json(unscored);
    })
    .catch(function(err) {
       res.json({"ERROR" : JSON.stringify(err)});
