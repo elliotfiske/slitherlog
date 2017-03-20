@@ -49,8 +49,8 @@ sequelize.sync().then(function() {
    // No entries! Let's seed the population
    population = [];
    if (entries.length === 0) {
-      // Generate 1000 55 bit strings of 0s or 1s.
-      for (var i = 0; i < 1000; i++) {
+      // Generate 200 random 55-bit strings of 0s or 1s.
+      for (var i = 0; i < 200; i++) {
          chromosome = '';
          for (var j = 0; j < 55; j++) {
             num = Math.floor(Math.random()*(1-0+1)+0);

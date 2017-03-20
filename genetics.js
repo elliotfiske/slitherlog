@@ -91,7 +91,7 @@ module.exports.spawnNextGeneration = function() {
    // Find current generation #
    return sequelize.LogEntry.max('generation').then(function(currGen) {
       var newFriends = [];
-      for (var ndx = 0; ndx < 5; ndx++) {
+      for (var ndx = 0; ndx < 200; ndx++) {
          newFriends.push(breedNewFriend(currGen));
       }
       return Promise.all(newFriends);
