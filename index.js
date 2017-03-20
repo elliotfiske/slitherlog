@@ -65,6 +65,7 @@ app.put('/logEntry', function(req, res) {
       return res.json(updated);
    })
    .catch(function(err) {
+      console.log("Error: ", err.message, JSON.stringify(err));
       res.status(401).json({"ERROR" : JSON.stringify(err) + err.message});
    });
 })
