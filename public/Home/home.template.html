@@ -1,11 +1,11 @@
 <div class="container-white">
    <div class="row">
-      <div class="panel panel-success">
+      <div class="panel panel-success" ng-repeat="gen in generations">
          <div class="panel-heading">
-            <h2 class="panel-title">Logs or whatever</h2>
+            <h2 class="panel-title">Generation {{$index}}</h2>
          </div>
          <div class="panel-body list-group">
-            <div class="row list-group-item" ng-repeat="logEntry in logEntries">
+            <div class="row list-group-item" ng-repeat="logEntry in gen">
                <b>{{logEntry.score}}</b> from <i>{{logEntry.chromosome}}</i>
                <span class="pull-right">By: {{logEntry.botId}}</span>
             </div>

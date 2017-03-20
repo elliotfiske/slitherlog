@@ -3,7 +3,13 @@ app.controller('homeController', ['$scope', '$state', '$rootScope', 'api', 'toas
 
    // Get courses and available courses
    API.logEntry.get().then(function(response) {
-      scope.logEntries = response.data;
+      scope.generations = [];
+      response.data.forEach(function(logEntry) {
+         if (scope.generations[logEntry.generation] === undefined) {
+            scope.generations[logEntry.generation] = [];
+         }
+         scope.generations[logEntry.generation].push(logEntry);
+      });
    })
    .catch(toastr.doErrorMessage(function(err) {}));;
 }])
