@@ -59,6 +59,9 @@ app.get('/logEntry', function(req, res) {
 app.put('/logEntry', function(req, res) {
    return sequelize.LogEntry.findById(req.body.id)
    .then(function(logEntry) {
+      if (!logEntry) {
+         throw new Error("No entry found with id " + req.body.id);
+      }
       return logEntry.update({score: req.body.score, botId: req.body.botId})
    })
    .then(function(updated) {
