@@ -56,15 +56,28 @@ app.get('/logEntry', function(req, res) {
    });
 });
 
+app.put('/logEntry', function(req, res) {
+   return sequelize.findById(req.body.id)
+   .then(function(logEntry) {
+      return logEntry.update({score: req.body.score, req.body.botId})
+   })
+   .then(function(updated) {
+      return res.json(updated);
+   })
+   .catch(function(err) {
+      res.json({"ERROR" : JSON.stringify(err) + err.message});
+   });
+})
+
 // Return a chromosome without a score that needs to be JUDGED
 app.get('/chromosomeToScore', function(req, res) {
    return sequelize.LogEntry.findOne({where:
-      score: -1
+      {score: -1}
    })
    .then(function(unscored) {
       if (!unscored) {
          // Generate a new batch of children to mess with
-         genetics.spawnNextGeneration();
+         return genetics.spawnNextGeneration();
       }
       else {
          return Promise.resolve(unscored);
@@ -77,6 +90,6 @@ app.get('/chromosomeToScore', function(req, res) {
       return res.json(unscored);
    })
    .catch(function(err) {
-      res.json({"ERROR" : JSON.stringify(err)});
+      res.json({"ERROR" : JSON.stringify(err) + err.message});
    });
 });

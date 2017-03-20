@@ -35,7 +35,8 @@ var LogEntry = sequelize.define('LogEntry', {
       type: Sequelize.INTEGER
    },
    botId: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      default: ""
    },
 }, {
    freezeTableName: true
@@ -50,14 +51,15 @@ sequelize.sync().then(function() {
    if (entries.length === 0) {
       // Generate 1000 55 bit strings of 0s or 1s.
       for (var i = 0; i < 1000; i++) {
-         chromosome = ''
+         chromosome = '';
          for (var j = 0; j < 55; j++) {
             num = Math.floor(Math.random()*(1-0+1)+0);
             chromosome += num.toString();
          }
-         population.append(chromosome);
+         population.push({chromosome: chromosome, generation: 0, score: -1});
       }
    }
+   return LogEntry.bulkCreate(population);
 })
 .catch(function(err) {
    console.error("EXTREMELY UNLIKELY ERROR DETECTED " + JSON.stringify(err.message), err.stack);
